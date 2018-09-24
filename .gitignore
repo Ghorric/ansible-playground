@@ -1,0 +1,42 @@
+karaf/
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# Gradle
+.gradle
+build/
+bin/
+
+# Ignore Gradle GUI config
+gradle-app.setting
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle-wrapper.jar
+
+# Cache of project
+.gradletasknamecache
+
+
+# ignore all . files and . folders
+.*
+
+# Dont ignore .gitignore (this file)
+# This is just for verbosity, you can leave it out if
+# .gitignore is already tracked or if you use -f to
+# force-add it if you just created it
+!/.gitignore

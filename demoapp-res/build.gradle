@@ -1,0 +1,38 @@
+apply plugin: 'maven-publish'
+apply plugin: "java"
+
+group = 'ch.wengle.demoapp'
+version = '1.0-SNAPSHOT'
+
+repositories { mavenCentral() }
+
+publishing {
+    publications {
+    
+// Added to JAR (generated resource folder) in project 'demoapp-eventlogger' and dynamically loaded by Camel during runtime.
+        mavenJava(MavenPublication) {
+            artifactId 'demoapp-res'
+            artifact source: 'src/main/resources/dynamic-camel-route.xml', classifier: 'dynamic-camel-route'
+            pom { packaging 'xml' }
+        }
+        
+// Can be installed with the Karaf Blueprint deployer
+// feature:install deployer camel-blueprint aries-blueprint
+// install blueprint:mvn:ch.wengle.demoapp/demoapp-res/1.0-SNAPSHOT/xml/deployed-camel-route
+        mavenJava(MavenPublication) {
+            artifactId 'demoapp-res'
+            artifact source: 'src/main/resources/deployed-camel-route.xml', classifier: 'deployed-camel-route'
+            pom { packaging 'xml' }
+        }
+    
+// Blueprint Deployer file to decorate OSGi service
+// feature:install deployer camel-blueprint aries-blueprint
+// install blueprint:mvn:ch.wengle.demoapp/demoapp-res/1.0-SNAPSHOT/xml/deployed-decorator
+	mavenJava(MavenPublication) {
+            artifactId 'demoapp-res'
+            artifact source: 'src/main/resources/deployed-decorator.xml', classifier: 'deployed-decorator'
+            pom { packaging 'xml' }
+        }
+    }
+    
+}

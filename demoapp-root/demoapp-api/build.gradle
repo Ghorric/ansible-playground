@@ -1,0 +1,8 @@
+
+jar {
+    baseName = 'demoapp-api'
+    manifest {
+        symbolicName = 'ch.wengle.demoapp.api'
+        instruction 'Import-Package', '*'
+    }
+}

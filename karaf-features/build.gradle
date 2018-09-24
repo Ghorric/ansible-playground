@@ -1,0 +1,18 @@
+apply plugin: 'java'
+apply plugin: 'maven-publish'
+
+group = 'ch.wengle.demoapp'
+version = '1.0-SNAPSHOT'
+
+repositories { mavenCentral() }
+
+// feature:repo-add mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId 'karaf-features'
+            artifact source: 'src/main/resources/features.xml', classifier: 'features'
+            pom { packaging 'xml' }
+        }
+    }
+}

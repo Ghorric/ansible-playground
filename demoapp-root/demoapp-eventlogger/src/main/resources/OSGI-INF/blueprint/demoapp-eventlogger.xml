@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<service ref="eventLoggerImpl" interface="ch.wengle.demoapp.api.EventLogger">
+		<service-properties>
+	      <entry key="type" value="impl"/>
+		</service-properties>
+	</service>
+
+	<camelContext id="implCamelContext" xmlns="http://camel.apache.org/schema/blueprint">
+		<template id="camelProducerTemplate" />
+    </camelContext>
+	
+	<bean id="eventLoggerImpl" class="ch.wengle.demoapp.eventlogger.EventLoggerImpl" init-method="start" destroy-method="stop" >
+		<property name="bundleContext" ref="blueprintBundleContext" />
+		<property name="camelProducerTemplate" ref="camelProducerTemplate" />
+		<property name="camelContext" ref="implCamelContext" />
+	</bean>
+   
+</blueprint>

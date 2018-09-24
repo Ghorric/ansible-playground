@@ -1,0 +1,36 @@
+<features
+    name="osgi-demo-features"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://karaf.apache.org/xmlns/features/v1.3.0"
+    xsi:schemaLocation="http://karaf.apache.org/xmlns/features/v1.3.0
+    http://karaf.apache.org/xmlns/features/v1.3.0">
+
+	<repository> mvn:org.apache.camel.karaf/apache-camel/RELEASE/xml/features</repository>
+
+    <feature name="demoApp" version="1.0.0" description="Basic setup: Consumer uses EventLogger OSGi service" install="auto">
+    	<feature>camel</feature>
+    	<feature>scr</feature>
+        <bundle>mvn:ch.wengle.demoapp/demoapp-api/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:ch.wengle.demoapp/demoapp-util/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:ch.wengle.demoapp/demoapp-eventlogger/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:ch.wengle.demoapp/demoapp-consumer/1.0-SNAPSHOT</bundle>
+    </feature>
+
+    <feature name="demoDecorator" version="1.0.0" description="Changes event msg before it is sent to the real EventLogger" install="auto">
+    	<feature>commonsDependencies</feature>
+        <bundle>blueprint:mvn:ch.wengle.demoapp/demoapp-res/1.0-SNAPSHOT/xml/deployed-decorator</bundle>
+    </feature>
+    
+    <feature name="demoDeployedCamelRoute" version="1.0.0" description="Dummy Camel route that writes log msgs" install="auto">
+    	<feature>commonsDependencies</feature>
+        <bundle>blueprint:mvn:ch.wengle.demoapp/demoapp-res/1.0-SNAPSHOT/xml/deployed-camel-route</bundle>
+    </feature>
+    
+    <feature name="commonsDependencies" version="1.0.0" description="Shared Dependencies" install="auto">
+    	<feature>demoApp</feature>
+    	<feature>deployer</feature>
+    	<feature>camel-blueprint</feature>
+    	<feature>aries-blueprint</feature>  
+    </feature>
+
+</features>

@@ -1,0 +1,5 @@
+rootProject.name = 'demoapp-root'
+include 'demoapp-api'
+include 'demoapp-util'
+include 'demoapp-eventlogger'
+include 'demoapp-consumer'

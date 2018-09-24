@@ -1,0 +1,45 @@
+repositories {
+	mavenLocal()
+	mavenCentral() 
+}
+
+allprojects {
+	apply plugin: "eclipse"
+	
+	group = 'ch.wengle.demoapp'
+	version = '1.0-SNAPSHOT'
+
+    task sayHello() {
+        doLast { println "Hello from ${project.name}" }
+    }
+}
+
+subprojects {
+	apply plugin: "java"
+	apply plugin: 'osgi'
+	apply plugin: 'maven-publish'
+
+	repositories {
+		mavenCentral()
+	}
+
+	publishing {
+	    publications {
+	        mavenJava(MavenPublication) {
+	            from components.java
+	        }
+	    }
+    }
+
+	dependencies {
+	    implementation 'com.google.guava:guava:23.0'
+	    testImplementation 'junit:junit:4.12'
+	}
+	
+	compileJava   {
+	  sourceCompatibility = '1.8'
+	  targetCompatibility = '1.8'
+	}
+
+}
+

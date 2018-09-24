@@ -1,0 +1,14 @@
+dependencies {
+	compile project(':demoapp-api')
+	compile 'org.osgi:org.osgi.core:6.0.0'
+}
+
+
+
+jar {
+    baseName = 'demoapp-util'
+    manifest {
+        symbolicName = 'ch.wengle.demoapp.util'
+        instruction 'Import-Package', '*'
+    }
+}

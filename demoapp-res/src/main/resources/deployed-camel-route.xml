@@ -1,0 +1,26 @@
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<manifest
+		xmlns="http://karaf.apache.org/xmlns/deployer/blueprint/v1.0.0">
+		Import-Package: ch.wengle.demoapp.api;version="[1.0,2)"
+	</manifest>
+
+	<camelContext id="deployedRoute"
+		xmlns="http://camel.apache.org/schema/blueprint">
+		<route>
+			<from uri="timer://test?fixedRate=true&amp;period=3000" />
+			<setBody>
+				<simple>Message ${date:now:yyyy-MM-dd HH:mm:ss}</simple>
+			</setBody>
+        	<bean ref="osgiServiceCallerEventLogger" method="callService(${body})"/>
+		</route>
+	</camelContext>
+
+	<bean id="osgiServiceCallerEventLogger"
+		class="ch.wengle.demoapp.util.OsgiServiceCallerEventLogger">
+		<property name="bundleContext" ref="blueprintBundleContext" />
+	</bean>
+	
+	
+
+</blueprint>

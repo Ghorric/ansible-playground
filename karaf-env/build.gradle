@@ -1,0 +1,26 @@
+apply plugin: 'java'
+
+repositories { mavenCentral() }
+
+ext {
+    karafVersion = '4.2.1'
+}
+
+dependencies {
+	runtime "org.apache.karaf:apache-karaf:$karafVersion@zip"
+}
+
+task getKaraf(type: Copy) {
+  from sourceSets.main.runtimeClasspath
+  into 'build/dl/'
+}
+
+task unzip(type: Copy) {
+    def zipFile = file("build/dl/apache-karaf-${karafVersion}.zip")
+    def outputDir = file("build/extract")
+    from zipTree(zipFile)
+    into outputDir
+    doLast {
+        file("build/extract/apache-karaf-${karafVersion}").renameTo(file("karaf"))
+    }
+}
