@@ -1,0 +1,45 @@
+---
+- name: This is a hello-world example for Docker command
+  hosts: all
+  connection: local
+  tasks:
+  - name: dockerVersion
+    command: "docker --version"
+    register: dockerVersionOutput
+  - debug: msg="{{ dockerVersionOutput.stdout }}"
+  - name: dockerPs
+    command: "docker ps"
+    register: dockerPsOutput
+  - debug: msg="{{ dockerPsOutput.stdout }}"
+  - name: Build image docker-karaf-ssh
+    docker_image:
+     path: /data/docker/docker-karaf-ssh/
+     name: wengle/docker-karaf-ssh
+  - name: dockerPs2
+    command: "docker ps"
+    register: dockerPs2Output
+  - debug: msg="{{ dockerPs2Output.stdout }}"
+  - name: Docker create network
+    command: "docker network create -d bridge net01"
+    register: createNetworkOutput
+  - debug: msg="{{ createNetworkOutput.stdout }}"
+  - name: Docker run server-karaf01 
+    docker_container:
+      name: server-karaf01
+      image: wengle/docker-karaf-ssh
+      networks:
+        - name: "net01"
+      published_ports:
+        - "58101:8101"
+        - "51099:1099"
+        - "54444:44444"
+        - "50022:22"
+      state: started 
+  - name: dockerPs3
+    command: "docker ps"
+    register: dockerPs3Output
+  - debug: msg="{{ dockerPs3Output.stdout }}"
+  - name: pingInfinite
+    command: "ping localhost"
+    register: pingInfiniteOutput
+  - debug: msg="{{ pingInfiniteOutput.stdout }}"

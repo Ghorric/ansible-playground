@@ -1,4 +1,5 @@
 karaf/
+*.dimg
 
 # Eclipse
 .classpath
