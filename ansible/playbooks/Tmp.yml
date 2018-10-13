@@ -1,0 +1,9 @@
+---
+- name: Temp playbook for trying out stuff
+  hosts: all
+  connection: local
+  tasks:
+  - name: dockerPs3
+    command: "docker ps"
+    register: dockerPs3Output
+  - debug: msg="{{ dockerPs3Output.stdout }}"

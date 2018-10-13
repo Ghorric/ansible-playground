@@ -1,2 +1,0 @@
-[myGrp01]
-remote ansible_host=localhost ansible_port=50022 ansible_connection=ssh ansible_user=root ansible_password=abc

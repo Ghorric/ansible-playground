@@ -56,6 +56,14 @@ RUN set -x && \
     echo "==> docker-compose"  && \
 	pip install 'docker-compose>=1.7.0'
 	
+	
+# Copy image docker-karaf-ssh.dimg
+# The image MUST be there before this Dockerfile is built.
+COPY . /home/
+
+# DNS
+COPY ./etc/docker/daemon.json /etc/docker/daemon.json
+	
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING false
 ENV ANSIBLE_RETRY_FILES_ENABLED false
@@ -69,9 +77,6 @@ ENV ANSIBLE_DEBUG False
 ENV HOME /home
 WORKDIR /data
 
-EXPOSE 58101 48101
-
-# Copy image docker-karaf-ssh.dimg
-COPY . /home/
+EXPOSE 8101 22
 
 # ENTRYPOINT ["ansible-playbook"]
