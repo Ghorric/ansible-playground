@@ -1,0 +1,19 @@
+---
+  - name: "Docker Load"
+    command: "docker load -i /home/docker-karaf-ssh.dimg"
+    register: dockerLoadOutput
+  - name: "Docker Run"
+    docker_container:
+      name: "{{ dind_karaf_instancename }}"
+      hostname: "{{ dind_karaf_instancename }}"
+      image: "wengle/docker-karaf-ssh"
+      networks:
+        - name: "bridge"
+      exposed_ports:
+        - 22
+        - 8101
+        - 1099
+        - 44444
+  - name: "Add to hosts"
+    command: "sh /home/scripts/ContainerIpToHosts.sh {{ dind_karaf_instancename }}"
+  - debug: msg="{{ dind_karaf_instancename }} => {{ dockerLoadOutput.stdout }} -> Started docker instance -> Added to hosts"

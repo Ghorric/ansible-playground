@@ -1,0 +1,8 @@
+---
+- name: Create the DinD network infrastructure
+  hosts: AnsibleMaster
+  roles:
+    - dind_all
+  tasks:
+    - name: pingInfinite
+      command: "ping localhost"

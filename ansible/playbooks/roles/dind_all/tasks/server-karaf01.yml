@@ -1,0 +1,6 @@
+---
+- name: "Server Karaf01"
+  include_role:
+    name: "dind_karaf"
+  vars:
+    dind_karaf_instancename: "server-karaf01"

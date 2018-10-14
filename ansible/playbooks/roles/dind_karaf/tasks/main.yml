@@ -1,0 +1,2 @@
+---
+- import_tasks: "dind_karaf.yaml"
