@@ -3,6 +3,14 @@
   hosts: AnsibleMaster
   roles:
     - dind_all
+
+- name: Deploy app to hosts
+  hosts: Consumer
+  roles:
+    - deploy_app
+
+- name: Prevent Docker shutdown
+  hosts: AnsibleMaster
   tasks:
     - name: pingInfinite
       command: "ping localhost"

@@ -25,6 +25,12 @@ RUN wget http://www-us.apache.org/dist/karaf/${KARAF_VERSION}/apache-karaf-${KAR
     mkdir /deploy; \
     sed -i 's/^\(felix\.fileinstall\.dir\s*=\s*\).*$/\1\/deploy/' /opt/karaf/etc/org.apache.felix.fileinstall-deploy.cfg
 
+RUN apk add --no-cache python && \
+    python -m ensurepip && \
+    rm -r /usr/lib/python*/ensurepip && \
+    pip install --upgrade pip setuptools && \
+    rm -r /root/.cache
+
 WORKDIR /opt/karaf
 COPY ./scripts .
 

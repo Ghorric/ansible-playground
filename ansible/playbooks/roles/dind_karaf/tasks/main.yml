@@ -1,2 +1,2 @@
 ---
-- import_tasks: "dind_karaf.yaml"
+- import_tasks: "dind_karaf.yml"

@@ -1,0 +1,9 @@
+---
+- name: pwdCmd
+  command: "pwd"
+  register: pwdCmdOutput
+- debug: msg="{{ pwdCmdOutput.stdout }}"
+- name: lsCmd
+  command: "ls"
+  register: lsCmdOutput
+- debug: msg="{{ lsCmdOutput.stdout }}"
