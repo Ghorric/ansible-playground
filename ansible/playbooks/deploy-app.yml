@@ -1,0 +1,5 @@
+---
+- name: Deploy app to hosts
+  hosts: Consumer
+  roles:
+    - deploy_app

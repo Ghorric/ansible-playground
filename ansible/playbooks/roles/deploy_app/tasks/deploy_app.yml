@@ -7,3 +7,7 @@
   command: "ls"
   register: lsCmdOutput
 - debug: msg="{{ lsCmdOutput.stdout }}"
+- name: Copy MvnRepo to hosts
+  copy:
+    src: /root/.m2/repository
+    dest: /root/.m2/

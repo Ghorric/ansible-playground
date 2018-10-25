@@ -1,0 +1,36 @@
+---
+- name: "Docker Load image"
+  docker_image:
+    name: wengle/docker-build-code
+    load_path: /root/docker-images/docker-build-code.dimg
+- synchronize:
+    src: /data/docker/docker-build-code-stage2
+    dest: "~/"
+- synchronize:
+    src: /data/karaf-features
+    dest: ~/docker-build-code-stage2/
+- synchronize:
+    src: /data/demoapp-res
+    dest: ~/docker-build-code-stage2/
+- synchronize:
+    src: /data/demoapp-root
+    dest: ~/docker-build-code-stage2/
+#- name: "Build Docker Image (Stage2)"
+#  docker_image:
+#    name: "wengle/docker-build-code-stage2"
+#    path: "/root/docker-build-code-stage2/"
+- name: "Build Docker Image (Stage2)"
+  command: "docker build -t wengle/docker-build-code-stage2 /root/docker-build-code-stage2/"
+- name: "Docker run build-code"
+  docker_container:
+    name: "server-build-code"
+    hostname: "server-build-code"
+    image: "wengle/docker-build-code-stage2"
+    timeout: 600
+    volumes:
+      - "/root/.m2/repository:/root/.m2/repository"
+    networks:
+      - name: "bridge"
+    exposed_ports:
+      - 22
+    command: "sh BuildAll.sh"

@@ -1,0 +1,5 @@
+---
+- name: Build app
+  hosts: AnsibleMaster
+  roles:
+    - build_app

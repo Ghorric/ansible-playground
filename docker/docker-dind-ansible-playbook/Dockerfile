@@ -17,7 +17,8 @@ ENV BUILD_PACKAGES \
   py-paramiko \
   py-pip \
   py-yaml \
-  ca-certificates
+  ca-certificates \
+  rsync
 
 # If installing ansible@testing
 #RUN \
@@ -55,15 +56,15 @@ RUN set -x && \
 	\
     echo "==> docker-compose"  && \
 	pip install 'docker-compose>=1.7.0'
-	
-	
-# Copy image docker-karaf-ssh.dimg
-# The image MUST be there before this Dockerfile is built.
-COPY . /home/
 
-# DNS
+WORKDIR /root/
+
+# docker-build-code.dimg and image docker-karaf-ssh.dimg are generated.
+# These images MUST be there before this Dockerfile is built.
+COPY docker-images docker-images
 COPY ./etc/docker/daemon.json /etc/docker/daemon.json
-	
+COPY scripts scripts
+
 ENV ANSIBLE_GATHERING smart
 ENV ANSIBLE_HOST_KEY_CHECKING false
 ENV ANSIBLE_RETRY_FILES_ENABLED false
@@ -74,9 +75,9 @@ ENV PATH /ansible/bin:$PATH
 ENV ANSIBLE_LIBRARY /ansible/library
 ENV ANSIBLE_DEBUG False
 
-ENV HOME /home
-WORKDIR /data
+ENV PLAYBOOKS /data/ansible/playbooks
+ENV MASTER_CONTAINER_SCRIPTS /data/docker/docker-dind-ansible-playbook/scripts
+
+RUN mkdir -p /root/.m2/repository
 
 EXPOSE 8101 22
-
-# ENTRYPOINT ["ansible-playbook"]

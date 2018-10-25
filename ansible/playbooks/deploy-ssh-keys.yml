@@ -1,0 +1,10 @@
+---
+- name: Generate SSH key
+  hosts: AnsibleMaster
+  roles:
+    - generate_ssh_key
+
+- name: Deploy pub SSH key to hosts
+  hosts: Consumer
+  roles:
+    - deploy_ssh_keys

@@ -1,15 +1,30 @@
 ---
+- name: Build app
+  hosts: AnsibleMaster
+  roles:
+    - build_app
+
 - name: Create the DinD network infrastructure
   hosts: AnsibleMaster
   roles:
     - dind_all
+
+- name: Generate SSH key
+  hosts: AnsibleMaster
+  roles:
+    - generate_ssh_key
+
+- name: Deploy pub SSH key to hosts
+  hosts: Consumer
+  roles:
+    - deploy_ssh_keys
 
 - name: Deploy app to hosts
   hosts: Consumer
   roles:
     - deploy_app
 
-- name: Prevent Docker shutdown
+- name: Prevent Docker container shutdown
   hosts: AnsibleMaster
   tasks:
     - name: pingInfinite

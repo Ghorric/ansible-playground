@@ -4,7 +4,10 @@ apply plugin: 'maven-publish'
 group = 'ch.wengle.demoapp'
 version = '1.0-SNAPSHOT'
 
-repositories { mavenCentral() }
+repositories {  
+	mavenLocal()
+	mavenCentral()
+}
 
 // feature:repo-add mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features
 publishing {
@@ -14,5 +17,8 @@ publishing {
             artifact source: 'src/main/resources/features.xml', classifier: 'features'
             pom { packaging 'xml' }
         }
+    }
+	repositories {
+        mavenLocal()
     }
 }
