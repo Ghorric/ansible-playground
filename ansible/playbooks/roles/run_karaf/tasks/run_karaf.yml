@@ -1,0 +1,7 @@
+---
+- name: Start Karaf
+  command: "sh /opt/karaf/bin/start"
+#- name: Copy MvnRepo to hosts
+#  copy:
+#    src: /root/.m2/repository
+#    dest: /root/.m2/

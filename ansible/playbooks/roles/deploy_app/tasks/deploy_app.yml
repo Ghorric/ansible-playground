@@ -1,13 +1,9 @@
 ---
-- name: pwdCmd
-  command: "pwd"
-  register: pwdCmdOutput
-- debug: msg="{{ pwdCmdOutput.stdout }}"
-- name: lsCmd
-  command: "ls"
-  register: lsCmdOutput
-- debug: msg="{{ lsCmdOutput.stdout }}"
-- name: Copy MvnRepo to hosts
-  copy:
-    src: /root/.m2/repository
-    dest: /root/.m2/
+- name: Install features-file
+  raw: 'feature:repo-add mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features'
+- name: Install demoApp
+  raw: 'feature:install demoApp'
+- name: List Bundles
+  raw: "list"
+  register: listOutput
+- debug: msg="{{ listOutput.stdout }}"

@@ -19,10 +19,15 @@
   roles:
     - deploy_ssh_keys
 
-- name: Deploy app to hosts
+- name: Run Karaf
   hosts: Consumer
   roles:
-    - deploy_app
+    - run_karaf
+
+#- name: Deploy app to hosts
+#  hosts: KarafConsumer
+#  roles:
+#    - deploy_app
 
 - name: Prevent Docker container shutdown
   hosts: AnsibleMaster

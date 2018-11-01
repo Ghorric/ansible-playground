@@ -1,5 +1,5 @@
 #!/bin/sh
-# "Run docker demon "
+# Run docker demon
 dockerd &
-# "Run ansible-playbook " $@
+# Run ansible-playbook
 ansible-playbook $@ 

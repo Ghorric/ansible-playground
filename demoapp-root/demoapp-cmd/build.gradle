@@ -1,0 +1,16 @@
+dependencies {
+	compile project(':demoapp-api')
+	compileOnly 'org.apache.karaf.shell:org.apache.karaf.shell.console:4.2.1'
+}
+
+jar {
+    baseName = 'demoapp-cmd'
+    manifest {
+        symbolicName = 'ch.wengle.demoapp.cmd'
+        instruction 'Import-Package',
+                            'org.apache.karaf.shell*;version="[4,5)"',
+        					'*'
+        instruction 'Private-Package', 'ch.wengle.demoapp.cmd'
+        instruction 'Karaf-Commands', '*'
+    }
+}

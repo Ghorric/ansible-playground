@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+
+	<!-- OSGi -->
+
+	<reference id="connectionFactory"
+		interface="javax.jms.ConnectionFactory" />
+
+	<reference id="msgFact"
+		interface="ch.wengle.demoapp.api.msg.MsgFact" />
+
+	<reference-list id="msgProcessors"
+		availability="mandatory"
+		interface="ch.wengle.demoapp.api.MsgProcessor" />
+
+	<service ref="producerJms"
+		interface="ch.wengle.demoapp.api.MsgProducer">
+		<service-properties>
+			<entry key="type" value="decorate" />
+		</service-properties>
+	</service>
+
+	<!-- Camel -->
+
+	<camelContext id="producerJmsCamelContext"
+		xmlns="http://camel.apache.org/schema/blueprint">
+		<template id="camelProducerTemplate" />
+		<route id="producerSendRoute">
+			<from uri="direct:send-msg" />
+			<to uri="log:send jms msg" />
+			<to uri="jms:queue:demoapp.in" />
+		</route>
+	</camelContext>
+
+	<!-- JMS -->
+
+	<bean id="jms" class="org.apache.camel.component.jms.JmsComponent">
+		<property name="connectionFactory" ref="connectionFactory" />
+	</bean>
+
+	<!-- Pojo -->
+
+	<bean id="producerJms"
+		class="ch.wengle.demoapp.producerjms.ProducerJms">
+		<property name="producerTemplate" ref="camelProducerTemplate" />
+	</bean>
+
+</blueprint>

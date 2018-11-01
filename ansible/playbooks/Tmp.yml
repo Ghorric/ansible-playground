@@ -1,5 +1,6 @@
 ---
-- name: Create the DinD network infrastructure
-  hosts: AnsibleMaster
+- name: Deploy app to hosts
+  hosts: KarafConsumer
+  gather_facts: no
   roles:
-    - dind_all
+    - deploy_app

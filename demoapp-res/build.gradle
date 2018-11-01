@@ -28,11 +28,19 @@ publishing {
 // Blueprint Deployer file to decorate OSGi service
 // feature:install deployer camel-blueprint aries-blueprint
 // install blueprint:mvn:ch.wengle.demoapp/demoapp-res/1.0-SNAPSHOT/xml/deployed-decorator
-	mavenJava(MavenPublication) {
+		mavenJava(MavenPublication) {
             artifactId 'demoapp-res'
             artifact source: 'src/main/resources/deployed-decorator.xml', classifier: 'deployed-decorator'
             pom { packaging 'xml' }
         }
+    
+// Publish javax.jms.ConnectionFactory OSGi service for ActiveMQ
+		mavenJava(MavenPublication) {
+            artifactId 'demoapp-res'
+            artifact source: 'src/main/resources/jms-config-amq.xml', classifier: 'jms-config-amq'
+            pom { packaging 'xml' }
+        }
+        
     }
     
 }

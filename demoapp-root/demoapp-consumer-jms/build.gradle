@@ -1,0 +1,15 @@
+
+dependencies {
+	compile project(':demoapp-api')
+	compile 'org.apache.activemq:activemq-client:5.15.6'
+	compile 'org.apache.camel:camel-jms:2.22.1'	
+	compile 'org.apache.camel:camel-core:2.22.1'	
+}
+
+jar {
+    baseName = 'demoapp-consumer-jms'
+    manifest {
+        symbolicName = 'ch.wengle.demoapp.consumerjms'
+        instruction 'Import-Package', 'org.apache.camel.component.jms', 'javax.jms', 'org.apache.activemq', '*'
+    }
+}

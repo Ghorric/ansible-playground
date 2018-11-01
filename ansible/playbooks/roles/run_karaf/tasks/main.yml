@@ -1,0 +1,2 @@
+---
+- import_tasks: "run_karaf.yml"
