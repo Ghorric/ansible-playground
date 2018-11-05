@@ -1,12 +1,10 @@
 package ch.wengle.demoapp.util;
 
 import java.util.function.BiConsumer;
-import java.util.logging.Logger;
 
-import ch.wengle.demoapp.api.EventLogger;
+import ch.wengle.demoapp.api.eventlogger.EventLogger;
 
 public class OsgiServiceCallerEventLogger extends OsgiServiceCaller<EventLogger> {
-	public static Logger logger = Logger.getLogger(OsgiServiceCallerEventLogger.class.getName());
 
 	@Override
 	protected Class<EventLogger> getType() {
@@ -15,7 +13,7 @@ public class OsgiServiceCallerEventLogger extends OsgiServiceCaller<EventLogger>
 
 	@Override
 	protected BiConsumer<EventLogger, Object> getServiceConsumer() {
-		return (service, body) -> service.info((String) body, "param");
+		return (service, body) -> service.info(b -> b.txt((String) body));
 	}
 
 }

@@ -9,25 +9,8 @@ ext {
 }
 
 dependencies {
-	compile 'org.osgi:org.osgi.core:6.0.0'
-	compile 'org.apache.camel:camel-core:2.22.0'
 	compile project(':demoapp-api')
-	testCompile "ch.wengle.demoapp:demoapp-res:$dynCamelCfgVersion:dynamic-camel-route@xml"
 }
-
-task dlDependencies(type: Copy) {
-	from sourceSets.test.runtimeClasspath
-  	into 'build/dl/'
-  	doLast {
-	  	copy {
-	      	from "build/dl/demoapp-res-1.0-SNAPSHOT-dynamic-camel-route.xml"
-	      	into "src/main/generated-resources/"
-		}
-		//delete 'build/dl/'
-	}
-}
-
-sourceSets.main.resources.srcDirs += ['src/main/generated-resources']
 
 jar {
     baseName = 'demoapp-eventlogger'

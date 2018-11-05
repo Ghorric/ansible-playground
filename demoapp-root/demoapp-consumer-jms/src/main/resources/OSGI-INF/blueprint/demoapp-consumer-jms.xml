@@ -11,7 +11,7 @@
 
 	<reference-list id="msgProcessors"
 		availability="mandatory"
-		interface="ch.wengle.demoapp.api.MsgProcessor" />
+		interface="ch.wengle.demoapp.api.MsgProcessor" filter="(type=workflow)" />
 
 	<!-- Camel -->
 

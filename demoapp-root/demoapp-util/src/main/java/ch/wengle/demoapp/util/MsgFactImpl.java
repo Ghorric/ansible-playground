@@ -53,6 +53,11 @@ public class MsgFactImpl implements MsgFact {
 		protected Optional<String> body;
 		protected final Map<HeaderKey, Object> headers;
 
+		public MsgImpl(String body, Map<HeaderKey, Object> headers) {
+			this.body = Optional.ofNullable(body);
+			this.headers = Objects.requireNonNull(headers);
+		}
+
 		@Override
 		public void putHeader(HeaderKey key, Object value) {
 			header(key, value);
@@ -60,13 +65,9 @@ public class MsgFactImpl implements MsgFact {
 
 		@Override
 		public Msg header(HeaderKey key, Object value) {
-			this.headers.put(Objects.requireNonNull(key), Optional.ofNullable(value));
+			if (value != null)
+				this.headers.put(Objects.requireNonNull(key, "key"), value);
 			return this;
-		}
-
-		public MsgImpl(String body, Map<HeaderKey, Object> headers) {
-			this.body = Optional.ofNullable(body);
-			this.headers = Objects.requireNonNull(headers);
 		}
 
 		@Override
@@ -119,6 +120,11 @@ public class MsgFactImpl implements MsgFact {
 		@SuppressWarnings("unchecked")
 		protected <T> T unsafeCast(Object obj) {
 			return (T) obj;
+		}
+
+		@Override
+		public String toString() {
+			return "Msg[body=" + body + ", headers=" + headers + "]";
 		}
 
 	}

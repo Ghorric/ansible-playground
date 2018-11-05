@@ -18,6 +18,8 @@
         <bundle>mvn:ch.wengle.demoapp/demoapp-util/1.0-SNAPSHOT</bundle>
         <bundle>mvn:ch.wengle.demoapp/demoapp-eventlogger/1.0-SNAPSHOT</bundle>
         <bundle>mvn:ch.wengle.demoapp/demoapp-processor/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:ch.wengle.demoapp/demoapp-camel-deployer/1.0-SNAPSHOT</bundle>
+        <bundle>mvn:ch.wengle.demoapp/demoapp-cmd/1.0-SNAPSHOT</bundle>
     </feature>
     
     <!-- DemoApp with JMS -->
@@ -38,7 +40,6 @@
     	<feature>camel-jms</feature>
     	<bundle>blueprint:mvn:ch.wengle.demoapp/demoapp-res/1.0-SNAPSHOT/xml/jms-config-amq</bundle>
         <bundle>mvn:ch.wengle.demoapp/demoapp-producer-jms/1.0-SNAPSHOT</bundle>
-        <bundle>mvn:ch.wengle.demoapp/demoapp-cmd/1.0-SNAPSHOT</bundle>
     </feature>
     
     <feature name="demoAppJmsBroker" version="1.0.0" description="Run a full ActiveMQ broker" install="auto">

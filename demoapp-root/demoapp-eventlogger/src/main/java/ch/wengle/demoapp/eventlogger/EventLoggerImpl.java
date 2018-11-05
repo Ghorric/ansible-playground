@@ -1,95 +1,82 @@
 package ch.wengle.demoapp.eventlogger;
 
-import java.io.InputStream;
-import java.util.Arrays;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-import org.apache.camel.CamelContext;
-import org.apache.camel.ProducerTemplate;
-import org.apache.camel.model.RoutesDefinition;
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import ch.wengle.demoapp.api.EventLogger;
+import ch.wengle.demoapp.api.event.Event;
+import ch.wengle.demoapp.api.event.EventKey;
+import ch.wengle.demoapp.api.eventlogger.CreateEvent;
+import ch.wengle.demoapp.api.eventlogger.EventLogger;
+import ch.wengle.demoapp.api.eventlogger.Severity;
+import ch.wengle.demoapp.api.eventwriter.EventWriter;
+import ch.wengle.demoapp.api.msg.Header;
 
 public class EventLoggerImpl implements EventLogger {
-	public static Logger logger = Logger.getLogger(EventLoggerImpl.class.getName());
-	private static final String GEN_RES_CAMEL = "/demoapp-res-1.0-SNAPSHOT-dynamic-camel-route.xml";
+	final Logger log = LoggerFactory.getLogger(EventLoggerImpl.class);
 
-	private BundleContext bundleContext;
-	private CamelContext camelContext;
-	private ProducerTemplate camelProducerTemplate;
+	private final LocalFact localFact;
+	private List<EventWriter> eventWriters;
 
-	public void start() {
-		try {
-			camelContext.stop();
-		} catch (Exception e) {
-			throw new IllegalStateException("Failed to stop camelContext: " + camelContext, e);
-		}
-		Bundle bundle = bundleContext.getBundle();
-		try (InputStream is = bundle.getEntry(GEN_RES_CAMEL).openStream()) {
-			RoutesDefinition routesDefinition = camelContext.loadRoutesDefinition(is);
-			routesDefinition.getRoutes().forEach(rd -> {
-				String routeId = rd.getId();
-				try {
-					camelContext.addRouteDefinition(rd);
-					// camelContext.startRoute(routeId);
-				} catch (Exception e) {
-					throw new IllegalStateException("Failed to add or start the route: " + routeId, e);
-				}
-			});
-
-			// Start and await
-			CountDownLatch latch = new CountDownLatch(1);
-			camelContext.addStartupListener((cc, as) -> {
-				latch.countDown();
-			});
-			camelContext.start();
-			logger.fine("|--> Await camel startup: " + showRoutes(camelContext));
-			latch.await(5, TimeUnit.SECONDS);
-			logger.fine("|--> Loaded camel routes: " + showRoutes(camelContext));
-		} catch (Exception e) {
-			throw new IllegalStateException("Failed to load file: " + GEN_RES_CAMEL, e);
-		}
+	public EventLoggerImpl() {
+		this(new LocalFact());
 	}
 
-	public void stop() {
-		try {
-			camelContext.removeRoute("dynamicRoute");
-		} catch (Exception ex) {
-			throw new RuntimeException("Failed to remove route 'dynamicRoute'.", ex);
-		}
-		logger.fine("|--> Loaded camel routes: count=" + camelContext.getRoutes().size());
+	protected EventLoggerImpl(LocalFact localFact) {
+		this.localFact = localFact;
 	}
 
-	public EventLogger info(String txt, Object... params) {
-		logger.info("|--> EventLogger WriteLogImpl: " + txt + " " + Arrays.toString(params));
-		if (camelContext.getRoute("dynamicRoute") != null) {
-			camelProducerTemplate.sendBody("direct:dynamicIn", txt + " - " + Arrays.toString(params));
-		} else {
-			logger.warning("|--> Can't process because route is already stopped: " + showRoutes(camelContext));
-		}
+	@Override
+	public EventLogger debug(CreateEvent createEvent) {
+		return event(Severity.DEBUG, createEvent);
+	}
+
+	@Override
+	public EventLogger info(CreateEvent createEvent) {
+		return event(Severity.INFO, createEvent);
+	}
+
+	@Override
+	public EventLogger warn(CreateEvent createEvent) {
+		return event(Severity.WARN, createEvent);
+	}
+
+	@Override
+	public EventLogger error(CreateEvent createEvent) {
+		return event(Severity.ERROR, createEvent);
+	}
+
+	@Override
+	public EventLogger event(Severity severity, CreateEvent createEvent) {
+		Objects.requireNonNull(severity); // TODO: Implement Severity
+		EventBuilderImpl builder = localFact.eventBuilder();
+		Objects.requireNonNull(createEvent).buildEvent(builder);
+		Map<EventKey, String> data = builder.getData();
+		enrich(data, severity);
+		Event event = createEvent(data);
+		eventWriters.forEach(ew -> ew.writeEvent(event));
 		return this;
 	}
 
-	private String showRoutes(CamelContext cc) {
-		return cc.getRoutes().stream()
-				.map(r -> r.getId() + "(" + cc.getRouteStatus(r.getId()) + ")").collect(Collectors.toList())
-				.toString();
+	protected void enrich(Map<EventKey, String> data, Severity severity) {
+		data.put(Header.SEVERITY, severity.name());
 	}
 
-	public void setBundleContext(BundleContext bundleContext) {
-		this.bundleContext = bundleContext;
+	protected Event createEvent(Map<EventKey, String> data) {
+		return new Event(data);
 	}
 
-	public void setCamelContext(CamelContext camelContext) {
-		this.camelContext = camelContext;
+	public void setEventWriters(List<EventWriter> eventWriters) {
+		this.eventWriters = eventWriters;
 	}
 
-	public void setCamelProducerTemplate(ProducerTemplate camelProducerTemplate) {
-		this.camelProducerTemplate = camelProducerTemplate;
+	protected static class LocalFact {
+		public EventBuilderImpl eventBuilder() {
+			return new EventBuilderImpl();
+		}
 	}
+
 }

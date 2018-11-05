@@ -33,7 +33,7 @@ publishing {
             artifact source: 'src/main/resources/deployed-decorator.xml', classifier: 'deployed-decorator'
             pom { packaging 'xml' }
         }
-    
+        
 // Publish javax.jms.ConnectionFactory OSGi service for ActiveMQ
 		mavenJava(MavenPublication) {
             artifactId 'demoapp-res'

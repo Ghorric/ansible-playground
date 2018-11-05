@@ -3,11 +3,11 @@ package ch.wengle.demoapp.api;
 import ch.wengle.demoapp.api.msg.Msg;
 
 public interface MsgProducer {
-	
-	public Response request(Msg msg);
-	
+
+	public void request(Msg msg, Response response);
+
 	@FunctionalInterface
-	public interface Response{
-		public void receivedResponse(Msg msg);
+	public static interface Response {
+		public void received(Msg msg);
 	}
 }

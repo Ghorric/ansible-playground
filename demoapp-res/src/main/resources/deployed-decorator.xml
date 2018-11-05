@@ -6,14 +6,14 @@
 	</manifest>
 
 	<service ref="decorateEventLogger"
-		interface="ch.wengle.demoapp.api.EventLogger" ranking="3">
+		interface="ch.wengle.demoapp.api.eventlogger.EventLogger" ranking="3">
 		<service-properties>
 			<entry key="type" value="decorate" />
 		</service-properties>
 	</service>
 
 	<reference id="eventLogger"
-		interface="ch.wengle.demoapp.api.EventLogger" filter="(type=impl)" />
+		interface="ch.wengle.demoapp.api.eventlogger.EventLogger" filter="(type=impl)" />
 
 	<bean id="decorateEventLogger"
 		class="ch.wengle.demoapp.util.DecorateEventLogger">
