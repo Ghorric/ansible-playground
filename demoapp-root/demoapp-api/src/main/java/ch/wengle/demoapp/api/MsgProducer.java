@@ -8,6 +8,6 @@ public interface MsgProducer {
 
 	@FunctionalInterface
 	public static interface Response {
-		public void received(Msg msg);
+		public void received(Msg msg, Throwable ex);
 	}
 }

@@ -1,8 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0" 
+    xmlns:ext="http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0">
+
+	<ext:property-placeholder placeholder-prefix="$[" placeholder-suffix="]" />
 
 	<service ref="msgFactImpl" interface="ch.wengle.demoapp.api.msg.MsgFact" />
 
+	<service ref="createReplyMsg" interface="ch.wengle.demoapp.api.MsgProcessor">
+		<service-properties>
+	      <entry key="type" value="create-reply-msg"/>
+		</service-properties>
+	</service>
+	
 	<bean id="msgFactImpl" class="ch.wengle.demoapp.util.MsgFactImpl" />
+
+	<bean id="createReplyMsg" class="ch.wengle.demoapp.util.CreateReplyMsg">
+		<property name="nodeName" value="$[karaf.name]" />
+	</bean>
 	
 </blueprint>

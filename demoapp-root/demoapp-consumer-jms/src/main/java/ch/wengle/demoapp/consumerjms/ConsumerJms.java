@@ -24,6 +24,7 @@ public class ConsumerJms implements Processor {
 	public void process(Exchange ex) throws Exception {
 		Msg msg = createMsg(ex);
 		msgProcessors.stream().forEach(proc -> proc.process(msg));
+		createResponse(ex, msg);
 	}
 
 	protected Msg createMsg(Exchange ex) {

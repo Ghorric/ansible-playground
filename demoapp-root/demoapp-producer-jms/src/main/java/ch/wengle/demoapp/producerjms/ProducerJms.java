@@ -1,6 +1,8 @@
 package ch.wengle.demoapp.producerjms;
 
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import org.apache.camel.ProducerTemplate;
@@ -19,9 +21,13 @@ public class ProducerJms implements MsgProducer {
 	public void request(Msg msg, Response response) {
 		Map<String, Object> headers = msg.getHeaders().entrySet().stream()
 				.collect(Collectors.toMap(e -> e.getKey().name(), e -> e.getValue()));
-		String respMsg = producerTemplate.requestBodyAndHeaders("direct:send-msg", msg.getBody(""), headers,
-				String.class);
-		response.received(msg.body(respMsg));
+		CompletableFuture<String> respFuture = producerTemplate.asyncRequestBodyAndHeaders("direct:send-msg",
+				msg.getBody(""), headers, String.class);
+		respFuture.orTimeout(30000, TimeUnit.MILLISECONDS);
+		respFuture.handle((result, ex) -> {
+			response.received(msg.body(result), ex);
+			return true;
+		});
 	}
 
 	public void setProducerTemplate(ProducerTemplate producerTemplate) {

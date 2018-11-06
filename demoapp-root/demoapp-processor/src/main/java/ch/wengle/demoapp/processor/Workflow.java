@@ -26,6 +26,7 @@ public class Workflow implements MsgProcessor {
 
 	EventLogger eventLogger;
 	MsgProcessor dynamicRoute;
+	MsgProcessor createReplyMsg;
 
 	@Activate
 	void activate(Map<String, Object> properties) {
@@ -55,16 +56,25 @@ public class Workflow implements MsgProcessor {
 			this.dynamicRoute = dynamicRoute;
 		logOsgiEvent("lostComponent", dynamicRoute, properties);
 	}
+	
+	@Reference(cardinality = ReferenceCardinality.OPTIONAL, policy = ReferencePolicy.DYNAMIC, policyOption = ReferencePolicyOption.GREEDY, target = "(type=create-reply-msg)")
+	public void bindCreateReplyMsg(MsgProcessor createReplyMsg, Map<String, Object> properties) {
+		this.createReplyMsg = createReplyMsg;
+		logOsgiEvent("gotComponent", createReplyMsg, properties);
+	}
+	
+	public void unbindCreateReplyMsg(MsgProcessor createReplyMsg, Map<String, Object> properties) {
+		if (Objects.requireNonNull(createReplyMsg).equals(this.createReplyMsg))
+			this.createReplyMsg = createReplyMsg;
+		logOsgiEvent("lostComponent", createReplyMsg, properties);
+	}
 
 	@Override
 	public void process(Msg msg) {
 		event(msg, "Workflow starts processing for msg '{}'.", msg.getHeaderStrOrThrow(MSG_ID));
-		dynamicRoute(msg);
-		event(msg, "Workflow completed processing for msg '{}'.", msg.getHeaderStrOrThrow(MSG_ID));
-	}
-
-	public void dynamicRoute(Msg msg) {
 		call(dynamicRoute, s -> s.process(msg));
+		call(createReplyMsg, s -> s.process(msg));
+		event(msg, "Workflow completed processing for msg '{}'.", msg.getHeaderStrOrThrow(MSG_ID));
 	}
 
 	public void event(Msg msg, String eventTxt, Object... eventTxtArgs) {
@@ -72,7 +82,7 @@ public class Workflow implements MsgProcessor {
 	}
 
 	protected void logOsgiEvent(String osgiEvent, Object obj, Map<String, Object> properties) {
-		log.debug("{}.{}({}): {}", CLS, osgiEvent, objToStr(dynamicRoute), properties);
+		log.debug("{}.{}({}): {}", CLS, osgiEvent, objToStr(obj), properties);
 	}
 
 	protected String objToStr(Object obj) {

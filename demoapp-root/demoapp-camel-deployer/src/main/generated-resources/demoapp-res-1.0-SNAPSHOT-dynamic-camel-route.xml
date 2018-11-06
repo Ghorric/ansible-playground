@@ -2,7 +2,7 @@
 
     <route id="dynamicRoute">
         <from uri="direct:dynamicIn"/>
-        <log message="log:|--|--> DemoApp RES!!! DynamicRoute ProcessMsg: ${body}" loggingLevel="WARN"/>
+        <log message="|--|--> DemoApp RES!!! DynamicRoute ProcessMsg: ${body}" loggingLevel="WARN"/>
     </route>
 
 </routes>

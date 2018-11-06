@@ -19,7 +19,7 @@
 		xmlns="http://camel.apache.org/schema/blueprint">
 		<template id="camelProducerTemplate" />
 		<route id="consumeInQueueRoute">
-			<from uri="jms:queue:demoapp.in" />
+			<from uri="jms:queue:demoapp.in?concurrentConsumers=8" />
 			<to uri="log:consumed jms msg" />
 			<bean ref="consumerJms" />
 		</route>
