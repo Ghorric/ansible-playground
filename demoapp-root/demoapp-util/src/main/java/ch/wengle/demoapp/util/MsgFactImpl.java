@@ -104,7 +104,7 @@ public class MsgFactImpl implements MsgFact {
 		}
 
 		public String getBodyOrThrow() {
-			return getBody().orElseThrow();
+			return getBody().orElseThrow( () -> new IllegalStateException("body is empty"));
 		}
 
 		@Override

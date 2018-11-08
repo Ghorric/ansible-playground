@@ -1,0 +1,7 @@
+jar {
+    baseName = 'demoapp-jmscfg-amqclient'
+    manifest {
+        symbolicName = 'ch.wengle.demoapp.jmscfgamqclient'
+        instruction 'Import-Package', 'javax.jms', 'org.apache.activemq', '*'
+    }
+}

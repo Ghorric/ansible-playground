@@ -48,4 +48,4 @@ COPY ./scripts .
 ENV JAVA_HOME=/usr/lib/jvm/default-jvm/
 
 VOLUME ["/deploy"]
-EXPOSE 1099 8101 44444 22
+EXPOSE 1099 8101 44444 5005 22 61616

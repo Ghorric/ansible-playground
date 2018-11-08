@@ -26,11 +26,17 @@
     name: "server-build-code"
     hostname: "server-build-code"
     image: "wengle/docker-build-code-stage2"
-    timeout: 600
+    timeout: 3600
+    detach: false
     volumes:
       - "/root/.m2/repository:/root/.m2/repository"
     networks:
       - name: "bridge"
     exposed_ports:
+      - 1099
+      - 8101
+      - 44444
+      - 5005
       - 22
+      - 61616
     command: "sh BuildAll.sh"

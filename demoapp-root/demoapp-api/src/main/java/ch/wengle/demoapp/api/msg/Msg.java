@@ -14,7 +14,7 @@ public interface Msg {
 	public <T> Optional<T> getHeader(HeaderKey key, Class<T> type);
 
 	public default <T> T getHeaderOrThrow(HeaderKey key, Class<T> type) {
-		return getHeader(key, type).orElseThrow();
+		return getHeader(key, type).orElseThrow(() -> new IllegalStateException("No entry for key: " + key));
 	}
 
 	public <T> T getHeader(HeaderKey key, T defaultValue);
@@ -28,7 +28,7 @@ public interface Msg {
 	}
 
 	public default String getHeaderStrOrThrow(HeaderKey key) {
-		return getHeaderStr(key).orElseThrow();
+		return getHeaderStr(key).orElseThrow(() -> new IllegalStateException("No entry for key: " + key));
 	}
 
 	public void setBody(String body);

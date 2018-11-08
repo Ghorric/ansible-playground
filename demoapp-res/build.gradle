@@ -34,13 +34,6 @@ publishing {
             pom { packaging 'xml' }
         }
         
-// Publish javax.jms.ConnectionFactory OSGi service for ActiveMQ
-		mavenJava(MavenPublication) {
-            artifactId 'demoapp-res'
-            artifact source: 'src/main/resources/jms-config-amq.xml', classifier: 'jms-config-amq'
-            pom { packaging 'xml' }
-        }
-        
     }
     
 }

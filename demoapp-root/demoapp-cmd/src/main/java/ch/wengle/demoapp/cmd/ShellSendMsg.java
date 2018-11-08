@@ -3,6 +3,7 @@ package ch.wengle.demoapp.cmd;
 import static ch.wengle.demoapp.api.msg.Header.MSG_ID;
 import static ch.wengle.demoapp.api.msg.Header.MSG_SENDER;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -61,7 +62,7 @@ public class ShellSendMsg extends AbstractShellCmd {
 		return optCountDownLatch.map(latch -> {
 			await(latch, timeout);
 			return allRespMsgs.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
-		}).orElse(null);
+		}).orElse(new HashMap<String, Long>()).toString();
 	}
 
 	protected void sendMsg(MsgFact msgFact, MsgProducer msgProducer, String msg, Optional<CountDownLatch> latch,

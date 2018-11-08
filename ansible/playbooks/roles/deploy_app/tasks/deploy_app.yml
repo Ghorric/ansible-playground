@@ -1,9 +1,25 @@
 ---
-- name: Install features-file
+- name: <KarafConsole> features-file
   raw: 'feature:repo-add mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features'
-- name: Install demoApp
+
+- name: <KarafConsole> demoApp
   raw: 'feature:install demoApp'
-- name: List Bundles
+
+- name: <KarafConsole> demoAppJmsConsumer
+  raw: 'feature:install demoAppJmsConsumer'
+
+- name: <KarafConsole> demoAppJmsProducer
+  raw: 'feature:install demoAppJmsProducer'
+
+- name: <KarafConsole> demoAppJmsBroker
+  raw: 'feature:install demoAppJmsBroker'
+
+- name: <KarafConsole> List
   raw: "list"
   register: listOutput
 - debug: msg="{{ listOutput.stdout }}"
+
+- name: <KarafConsole> Send a bunch of JMS messages
+  raw: 'demo-app:send -n 100'
+  register: sendJmsMsgsOutput
+- debug: msg="{{ sendJmsMsgsOutput.stdout }}"
