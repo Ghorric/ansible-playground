@@ -1,7 +1,22 @@
 ---
+- command: "getent hosts server-broker"
+  register: getentOutp
+  delegate_to: 127.0.0.1
+- name: Broker IP Var
+  set_fact:
+    broker_ip: "{{ getentOutp.stdout | regex_search('([^\\s]+)') }}"
+- debug: var=broker_ip
+
+- name: ensure file exists
+  copy:
+    content: "demoappBrokerUrl=tcp://{{ broker_ip }}:61616"
+    dest: /opt/karaf/etc/ch.wengle.demoapp.jmscfgamqclient.cfg
+
+- name: set karaf name
+  lineinfile:
+    path: /opt/karaf/etc/system.properties
+    regexp: '^karaf.name = root'
+    line: 'karaf.name = {{ inventory_hostname }}'
+
 - name: Start Karaf
   command: "sh /opt/karaf/bin/start"
-#- name: Copy MvnRepo to hosts
-#  copy:
-#    src: /root/.m2/repository
-#    dest: /root/.m2/

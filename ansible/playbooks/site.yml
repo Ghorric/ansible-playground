@@ -14,20 +14,25 @@
   roles:
     - generate_ssh_key
 
-- name: Deploy pub SSH key to hosts
-  hosts: Consumer
+- name: Start Karafs
+  hosts:
+  - ServerBroker
+  - ServerDemoApp
   roles:
     - deploy_ssh_keys
-
-- name: Run Karaf
-  hosts: Consumer
-  roles:
     - run_karaf
 
-#- name: Deploy app to hosts
-#  hosts: KarafConsumer
-#  roles:
-#    - deploy_app
+- name: Run JMS-Broker
+  hosts: KarafBroker
+  gather_facts: no
+  roles:
+    - deploy_broker
+
+- name: Run DemoApp
+  hosts: KarafDemoApp
+  gather_facts: no
+  roles:
+    - deploy_app
 
 - name: Prevent Docker container shutdown
   hosts: AnsibleMaster

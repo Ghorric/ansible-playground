@@ -1,5 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0">
+<blueprint xmlns="http://www.osgi.org/xmlns/blueprint/v1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:cm="http://aries.apache.org/blueprint/xmlns/blueprint-cm/v1.0.0"
+	xsi:schemaLocation="
+           http://www.osgi.org/xmlns/blueprint/v1.0.0 http://www.osgi.org/xmlns/blueprint/v1.0.0/blueprint.xsd">
+
+	<!-- OSGI blueprint property placeholder -->
+	<cm:property-placeholder persistent-id="ch.wengle.demoapp.jmscfgamqclient">
+		<!-- list some properties for this test -->
+		<cm:default-properties>
+			<cm:property name="demoappBrokerUrl"
+				value="tcp://localhost:61616" />
+		</cm:default-properties>
+	</cm:property-placeholder>
 
 	<!-- OSGi services -->
 
@@ -10,7 +22,7 @@
 
 	<bean id="amqConnectionFactory"
 		class="org.apache.activemq.ActiveMQConnectionFactory">
-		<property name="brokerURL" value="tcp://localhost:61616" />
+		<property name="brokerURL" value="${demoappBrokerUrl}" />
 		<property name="userName" value="karaf" />
 		<property name="password" value="karaf" />
 	</bean>

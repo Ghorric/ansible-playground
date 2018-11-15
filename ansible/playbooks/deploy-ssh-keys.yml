@@ -5,6 +5,6 @@
     - generate_ssh_key
 
 - name: Deploy pub SSH key to hosts
-  hosts: Consumer
+  hosts: ServerDemoApp
   roles:
     - deploy_ssh_keys

@@ -7,18 +7,10 @@
 #- command: "ssh karaf@server-{{ inventory_hostname }} -p 8101 'feature:install externalDepCommonsAmq'"
 #  delegate_to: 127.0.0.1
 
-- name: <KarafConsole> demoAppJmsConsumer
-  raw: 'feature:install demoAppJmsConsumer'
-
-- name: <KarafConsole> demoAppJmsProducer
-  raw: 'feature:install demoAppJmsProducer'
+- name: <KarafConsole> demoAppJmsBroker
+  raw: 'feature:install demoAppJmsBroker'
 
 - name: <KarafConsole> List
   raw: "list"
   register: listOutput
 - debug: msg="{{ listOutput.stdout }}"
-
-- name: <KarafConsole> Send a bunch of JMS messages
-  raw: 'demo-app:send -n 100'
-  register: sendJmsMsgsOutput
-- debug: msg="{{ sendJmsMsgsOutput.stdout }}"

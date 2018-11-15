@@ -18,3 +18,5 @@ WORKDIR /home/gradle
 
 COPY ./scripts .
 
+RUN mkdir -p .m2/repository
+

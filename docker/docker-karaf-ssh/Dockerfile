@@ -49,3 +49,31 @@ ENV JAVA_HOME=/usr/lib/jvm/default-jvm/
 
 VOLUME ["/deploy"]
 EXPOSE 1099 8101 44444 5005 22 61616
+
+COPY external-karaf-features.xml .
+RUN echo "stop karaf.." && \
+    sh /opt/karaf/bin/start  && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:repo-add file:/opt/karaf/external-karaf-features.xml"; do echo "Try again feature"; done' && \
+    sh /opt/karaf/bin/client "feature:repo-list | grep external-karaf-features"  && \
+    echo "install camel.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install camel"; do echo "Try again amqDependencies"; done' && \
+    echo "install scr.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install scr"; do echo "Try again amqDependencies"; done' && \
+    echo "install aries-blueprint.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install aries-blueprint"; do echo "Try again amqDependencies"; done' && \
+    echo "install jms.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install jms"; do echo "Try again amqDependencies"; done' && \
+    echo "install shell-compat.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install shell-compat"; do echo "Try again amqDependencies"; done' && \
+    echo "install activemq-camel.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install activemq-camel"; do echo "Try again amqDependencies"; done' && \
+    echo "install activemq.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install activemq"; do echo "Try again amqDependencies"; done' && \
+    echo "install activemq-client.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install activemq-client"; do echo "Try again amqDependencies"; done' && \
+    echo "install camel-jms.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "feature:install camel-jms"; do echo "Try again amqDependencies"; done' && \
+    echo "list packages.." && \
+    /bin/sh -c 'until sh /opt/karaf/bin/client "list"; do echo "Try again list"; done' && \
+    echo "stop karaf.." && \
+    sh /opt/karaf/bin/stop

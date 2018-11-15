@@ -1,3 +1,4 @@
 ---
+- import_tasks: "server-broker.yml"
 - import_tasks: "server-karaf01.yml"
 - import_tasks: "server-karaf02.yml"

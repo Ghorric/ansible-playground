@@ -1,5 +1,12 @@
 ---
-- name: Deploy app to hosts
-  hosts: Consumer
+- name: Run JMS-Broker
+  hosts: KarafBroker
+  gather_facts: no
+  roles:
+    - deploy_broker
+
+- name: Run DemoApp
+  hosts: KarafDemoApp
+  gather_facts: no
   roles:
     - deploy_app

@@ -85,4 +85,12 @@
     	<feature>aries-blueprint</feature>  
     </feature>
 
+	<!-- Other -->
+
+	<feature name="jmsInvalidCfg" version="1.0.0" description="External Addon Dependencies" install="auto">
+    	<config name="ch.wengle.demoapp.jmscfgamqclient">
+			demoappBrokerUrl=tcp://thisHostDoesNotExist:61616
+		</config>
+    </feature>
+
 </features>

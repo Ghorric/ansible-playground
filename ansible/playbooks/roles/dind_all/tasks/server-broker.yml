@@ -1,0 +1,6 @@
+---
+- name: "Server Broker"
+  include_role:
+    name: "dind_karaf"
+  vars:
+    dind_karaf_instancename: "server-broker"
