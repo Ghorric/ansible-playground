@@ -1,0 +1,5 @@
+---
+- name: <KarafConsole> Send a bunch of JMS messages
+  raw: 'demo-app:send  -l -s -n 100'
+  register: sendJmsMsgsOutput
+- debug: msg="{{ sendJmsMsgsOutput.stdout }}"

@@ -34,8 +34,23 @@
   roles:
     - deploy_app
 
-- name: Prevent Docker container shutdown
-  hosts: AnsibleMaster
+- name: Prompt before sending DemoApp msgs
+  hosts:
+  - AnsibleMaster
   tasks:
-    - name: pingInfinite
-      command: "ping localhost"
+  - pause:
+      prompt: "Press Enter to send DemoApp msgs."
+
+- name: Send DemoApp messages
+  hosts:
+  - karaf01
+  gather_facts: no
+  roles:
+    - send_msgs
+
+- name: Prompt that prevents Docker container shutdown
+  hosts:
+  - AnsibleMaster
+  tasks:
+  - pause:
+      prompt: "Press Enter to finish the build. This stops all docker containers (and the Karaf instances running on these containers)."

@@ -1,9 +1,17 @@
 ---
 - name: <KarafConsole> features-file
   raw: 'feature:repo-add mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features'
+  retries: 5
+  delay: 3
+  register: result
+  until: result.rc == 0
 
 - name: <KarafConsole> external dependencies
   raw: 'feature:install externalDepCommonsAmq'
+  retries: 5
+  delay: 5
+  register: result
+  until: result.rc == 0
 #- command: "ssh karaf@server-{{ inventory_hostname }} -p 8101 'feature:install externalDepCommonsAmq'"
 #  delegate_to: 127.0.0.1
 

@@ -20,3 +20,11 @@
 
 - name: Start Karaf
   command: "sh /opt/karaf/bin/start"
+
+- name: Await Karaf startup
+  shell: "sh /opt/karaf/bin/client 'list'"
+  register: karafStartupResult
+  until: karafStartupResult.rc == 0
+  retries: 10
+  delay: 6
+- debug: msg="SUCCESSFULLY started Karaf. These bundles are installed => {{ karafStartupResult.stdout }}"

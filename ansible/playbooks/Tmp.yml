@@ -1,8 +1,1 @@
 ---
-- name: Start Karafs
-  hosts:
-  - AnsibleMaster
-  tasks:
-  - command: "ssh karaf@server-karaf01 -p 8101 'demo-app:send -n 100'"
-    register: sendJmsMsgsOutput
-  - debug: msg="{{ sendJmsMsgsOutput.stdout }}"

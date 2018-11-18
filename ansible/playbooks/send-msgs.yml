@@ -1,0 +1,7 @@
+---
+- name: Send DemoApp messages
+  hosts:
+  - karaf01
+  gather_facts: no
+  roles:
+    - send_msgs

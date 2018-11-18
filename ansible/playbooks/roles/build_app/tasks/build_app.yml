@@ -21,7 +21,7 @@
 #    path: "/root/docker-build-code-stage2/"
 - name: "Build Docker Image (Stage2)"
   command: "docker build -t wengle/docker-build-code-stage2 /root/docker-build-code-stage2/"
-- name: "Docker run build-code"
+- name: "Docker run build-code (Really slow, sry. Check current status with -> docker logs server-build-code)"
   docker_container:
     name: "server-build-code"
     hostname: "server-build-code"
@@ -40,3 +40,10 @@
       - 22
       - 61616
     command: "sh BuildAll.sh"
+
+- name: Docker-Run Output to var
+  command: "docker logs server-build-code"
+  register: dockerRunOutput
+- name: Show Docker-Run Output
+  debug:
+    msg: "Docker said: {{ dockerRunOutput.stdout }}"

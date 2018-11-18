@@ -41,7 +41,15 @@ public class ShellSendMsg extends AbstractShellCmd {
 	@Option(name = "-t", aliases = {
 			"--timeout" }, description = "Timeout in MILLISECONDS to wait for all response messages (default=60000)", required = false, multiValued = false)
 	private Long timeout;
+	
+	@Option(name = "-s", aliases = {
+	"--sysout" }, description = "Print output", required = false, multiValued = false)
+	private boolean sysout;
 
+	@Option(name = "-l", aliases = {
+	"--log" }, description = "Log output", required = false, multiValued = false)
+	private boolean logout;	
+	
 	@Reference(optional = true)
 	private MsgProducer msgProducer;
 
@@ -59,10 +67,15 @@ public class ShellSendMsg extends AbstractShellCmd {
 		BlockingQueue<String> allRespMsgs = new LinkedBlockingQueue<>(numberOfMsgs);
 		for (int i = 0; i < numberOfMsgs; i++)
 			sendMsg(msgFact, msgProducer, numberOfMsgs > 1 ? msg + " (" + i + ")" : msg, optCountDownLatch, allRespMsgs);
-		return optCountDownLatch.map(latch -> {
+		String outp = optCountDownLatch.map(latch -> {
 			await(latch, timeout);
 			return allRespMsgs.stream().collect(Collectors.groupingBy(e -> e, Collectors.counting()));
 		}).orElse(new HashMap<String, Long>()).toString();
+		if(sysout) 
+			System.out.println(outp);
+		if(logout) 
+			log.info(outp);
+		return outp;
 	}
 
 	protected void sendMsg(MsgFact msgFact, MsgProducer msgProducer, String msg, Optional<CountDownLatch> latch,

@@ -1,0 +1,2 @@
+---
+- import_tasks: "send_msgs.yml"
