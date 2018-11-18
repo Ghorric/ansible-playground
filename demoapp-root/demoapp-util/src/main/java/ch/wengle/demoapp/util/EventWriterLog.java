@@ -22,13 +22,15 @@ import ch.wengle.demoapp.api.eventlogger.Severity;
 import ch.wengle.demoapp.api.eventwriter.EventWriter;
 
 public class EventWriterLog implements EventWriter {
+	private static final String NO_VALUE = "NO_VALUE";
+
 	final Logger log = LoggerFactory.getLogger(EventWriterLog.class);
 
 	final Set<EventKey> NO_KEY = new HashSet<>(Arrays.asList(SEVERITY, MSG_ID, EVENT_TXT));
 
 	@Override
 	public void writeEvent(Event event) {
-		Severity severity = Severity.valueOf(event.get(SEVERITY));
+		Severity severity = Severity.valueOf(event.get(SEVERITY, Severity.INFO.name()));
 		List<EventKey> order = orderKeys(Objects.requireNonNull(severity), event.getKeys());
 		String logMsg = createLogMsg(event, order);
 		writeLog(severity, logMsg);
@@ -58,7 +60,7 @@ public class EventWriterLog implements EventWriter {
 	}
 
 	protected String createLogMsg(Event event, List<EventKey> order) {
-		Stream<StringBuffer> stream = order.stream().map(key -> NO_KEY.contains(key) ? new StringBuffer(event.get(key))  : new StringBuffer(key.name() + "=" + event.get(key)));
+		Stream<StringBuffer> stream = order.stream().map(key -> NO_KEY.contains(key) ? new StringBuffer(event.get(key, NO_VALUE))  : new StringBuffer(key.name() + "=" + event.get(key, NO_VALUE)));
 		StringBuffer sb = stream.reduce(new StringBuffer(), (r, n) -> r.append(" | ").append(n));
 		return sb.toString();
 	}

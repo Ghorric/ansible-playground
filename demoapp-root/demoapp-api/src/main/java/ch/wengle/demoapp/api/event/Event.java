@@ -12,8 +12,8 @@ public class Event {
 		this.values = Collections.unmodifiableMap(Objects.requireNonNull(values));
 	}
 
-	public String get(EventKey key) {
-		return values.get(Objects.requireNonNull(key));
+	public String get(EventKey key, String defaultValue) {
+		return values.getOrDefault(Objects.requireNonNull(key), defaultValue);
 	}
 
 	public Map<EventKey, String> getAll() {

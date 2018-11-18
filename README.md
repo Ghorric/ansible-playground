@@ -72,9 +72,16 @@ karaf@root()> demo-app:send -n 20
 {root=20}
 
 Additional stuff in the Karaf console:
-karaf@root()> feature:install addonDecorator
 karaf@root()> feature:install addonDeployedCamelRoute
-karaf@root()> demo-app:event
+karaf@root()> ld | grep Message | tail -n 1
+00:17:46.148 INFO [Camel (deployedRoute) thread #4 - timer://test]  | INFO | NO_VALUE | Message 2018-11-19 00:17:46
+karaf@root()>
+karaf@root()> feature:install addonDecorator
+karaf@root()> ld | grep Message | tail -n 1
+00:18:07.154 INFO [Camel (deployedRoute) thread #4 - timer://test]  | INFO | NO_VALUE | Message 2018-11-19 00:18:07 | DECORATE=SOME_EVENTTEXT_DECORATION!!!
+karaf@root()> feature:uninstall addonDecorator
+karaf@root()> ld | grep Message | tail -n 1
+00:18:31.152 INFO [Camel (deployedRoute) thread #4 - timer://test]  | INFO | NO_VALUE | Message 2018-11-19 00:18:31
 
 ## Built With
 
