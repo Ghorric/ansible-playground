@@ -1,20 +1,20 @@
 # ansible-playground
 
-Ansible builds, installs and runs a small JMS app on a DinD (Docker in Docker) environment. It creates 4 hosts: Ansible-Master, Jms-Broker and two DemoApp (Karaf) boxes.
+Ansible builds, installs and runs a small JMS app on a DinD (Docker in Docker) environment. It creates four hosts: Ansible-Master, JMS-Broker and two DemoApp (Karaf) boxes.
 
 ## Warning
 
-This is NOT a Docker example! Don't use Docker like this for production deployments! (Keep them simple, small and immutable)
+This project is NOT a Docker example! Don't use Docker like this for production deployments! (Keep them simple, small and immutable)
 
-This code is just me trying out Ansible. So this is not exactly a how-to project. I made many things just work somehow and I might (or might not) improve it in the future.
+This code is just me trying out Ansible. So this is not exactly a how-to project. I made many things work somehow, and I might (or might not) improve it in the future.
 
 ## Getting Started
 
-The following instructions will run the app with Docker/Ansible. You can also run the JMS app directly on your local computer (without virtualzation; Ansible and Docker are not involved at all). More about that in the 'Pure Karaf setup' chapter.
+The following instructions will run the app with Docker/Ansible. You can also run the JMS app directly on your local computer (without virtualization; Ansible and Docker are not involved at all). More about that in the 'Pure Karaf setup' chapter.
 
 ### Prerequisites
 
-I only tested this on Windows. Theoretically, it shouldn't be too dificult to make it runnable on another OS. Everything is executed inside Docker containers except the script that runs 'docker build', 'docker save' and 'docker run' (***Win.sh scripts are Windows only because they use winpty).
+I only tested this on Windows. Theoretically, it shouldn't be too difficult to make it runnable on another OS. Everything is executed inside Docker containers except the script that runs 'docker build', 'docker save' and 'docker run' (***Win.sh scripts are Windows only because they use winpty).
 
 You need to install 'Git Bash' and Docker (links in 'Built With' section).
 
@@ -28,7 +28,7 @@ Go to the project root with Git Bash and run:
 ```
 sh DeployWin.sh
 ```
-Yes, it takes a lot of time! Especially the first time when all the docker images and dependencies have to be downloaded.
+Yes, it takes a lot of time! Especially the first time when it downloads all the images and dependencies.
 
 The playbook should pause with this prompt:
 ```
