@@ -56,22 +56,29 @@ What just happened when I ran the DeployWin.sh script? In short; it builds the d
 Requeired: Gradle, Maven, Java 1.8, Git Bash
 
 Download Karaf & Compile code:
+```
 ${workspace_loc:/karaf-env} gradle getKaraf unzip
 ${workspace_loc:/demoapp-res} gradle publishToMavenLocal
 ${workspace_loc:/karaf-features} gradle publishToMavenLocal
 ${workspace_loc:/demoapp-root} gradle dlDependencies jar publishToMavenLocal
+```
 
 Start Karaf in Git Bash: 
+```
 sh DevRunKarafWin.sh
+```
 
 Install the DemoApp in the Karaf console:
+```
 karaf@root()> feature:repo-add mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features
 Adding feature url mvn:ch.wengle.demoapp/karaf-features/1.0-SNAPSHOT/xml/features
 karaf@root()> feature:install demoAppJmsAll
 karaf@root()> demo-app:send -n 20
 {root=20}
+```
 
 Additional stuff in the Karaf console:
+```
 karaf@root()> feature:install addonDeployedCamelRoute
 karaf@root()> ld | grep Message | tail -n 1
 00:17:46.148 INFO [Camel (deployedRoute) thread #4 - timer://test]  | INFO | NO_VALUE | Message 2018-11-19 00:17:46
@@ -82,6 +89,7 @@ karaf@root()> ld | grep Message | tail -n 1
 karaf@root()> feature:uninstall addonDecorator
 karaf@root()> ld | grep Message | tail -n 1
 00:18:31.152 INFO [Camel (deployedRoute) thread #4 - timer://test]  | INFO | NO_VALUE | Message 2018-11-19 00:18:31
+```
 
 ## Built With
 
