@@ -51,7 +51,7 @@ VOLUME ["/deploy"]
 EXPOSE 1099 8101 44444 5005 22 61616
 
 COPY external-karaf-features.xml .
-RUN echo "stop karaf.." && \
+RUN echo "start karaf.." && \
     sh /opt/karaf/bin/start  && \
     /bin/sh -c 'until sh /opt/karaf/bin/client "feature:repo-add file:/opt/karaf/external-karaf-features.xml"; do echo "Try again feature"; done' && \
     sh /opt/karaf/bin/client "feature:repo-list | grep external-karaf-features"  && \

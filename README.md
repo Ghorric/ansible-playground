@@ -55,13 +55,21 @@ What just happened when I ran the DeployWin.sh script? In short; it builds the d
 
 Requeired: Gradle, Maven, Java 1.8, Git Bash
 
-Download Karaf & Compile code:
+### Build
+
+Download Karaf & Compile code using the script:
+```
+sh DevBuildAll.sh
+```
+Or do it manually:
 ```
 ${workspace_loc:/karaf-env} gradle getKaraf unzip
 ${workspace_loc:/demoapp-res} gradle publishToMavenLocal
 ${workspace_loc:/karaf-features} gradle publishToMavenLocal
 ${workspace_loc:/demoapp-root} gradle dlDependencies jar publishToMavenLocal
 ```
+
+### Run Karaf & Install DemoApp
 
 Start Karaf in Git Bash: 
 ```
