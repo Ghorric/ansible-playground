@@ -14,9 +14,12 @@ The following instructions will run the app with Docker/Ansible. You can also ru
 
 ### Prerequisites
 
-I only tested this on Windows. Theoretically, it shouldn't be too difficult to make it runnable on another OS. Everything is executed inside Docker containers except the script that runs 'docker build', 'docker save' and 'docker run' (***Win.sh scripts are Windows only because they use winpty).
+Only tested this on Windows. Theoretically, it shouldn't be too difficult to make it runnable on another OS. Everything is executed inside Docker containers except the script that runs 'docker build', 'docker save' and 'docker run' (***Win.sh scripts are Windows only scripts).
 
-You need to install 'Git Bash' and Docker (links in 'Built With' section).
+You need to install 'Git Bash' and Docker (links in 'Built With' section). 
+
+Alternatively you can run it on WSL (***WslDebian.sh). I used the Debian from Windows Store:
+https://nickjanetakis.com/blog/setting-up-docker-for-windows-and-wsl-to-work-flawlessly
 
 ### Installing
 
